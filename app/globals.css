@@ -131,16 +131,14 @@ html {
 .crossfade-container .crossfade-layer {
   position: absolute;
   inset: 0;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .crossfade-container .crossfade-layer.active {
   opacity: 1;
-  transform: scale(1);
   pointer-events: auto;
 }
 .crossfade-container .crossfade-layer.inactive {
   opacity: 0;
-  transform: scale(0.98);
   pointer-events: none;
 }
 
