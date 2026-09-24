@@ -22,29 +22,10 @@ export default function Brands() {
 
   const isWheels = displayMode === 'wheels'
 
-  const wheelBrands = [
-    {
-      name: 'Ferrari',
-      tag: 'Scuderia Spec',
-      image: '/site-images/ferrari-red.jpg',
-      fontStyle: 'italic',
-      logoText: 'Ferrari',
-    },
-    {
-      name: 'Lamborghini',
-      tag: 'V10 & V12 Fitment',
-      image: '/yellow-car.jpg',
-      fontStyle: 'italic',
-      logoText: 'Lamborghini',
-    },
-    {
-      name: 'Porsche',
-      tag: 'GT3 & Turbo Fitment',
-      image: '/site-images/porsche-green.jpg',
-      fontStyle: 'normal',
-      logoText: 'PORSCHE',
-    },
-  ]
+  // User request: In tyres/wheels mode, remove premium brands section
+  if (isWheels) {
+    return null
+  }
 
   const towFleets = [
     {
@@ -70,10 +51,10 @@ export default function Brands() {
     },
   ]
 
-  const cards = isWheels ? wheelBrands : towFleets
+  const cards = towFleets
 
   return (
-    <section id="brands" className="w-full py-20 lg:py-28 bg-[#fafafa] border-y border-neutral-200/80">
+    <section id="fleet" className="w-full py-20 lg:py-28 bg-[#fafafa] border-y border-neutral-200/80">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         {/* Section Heading */}
         <div

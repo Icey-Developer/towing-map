@@ -22,6 +22,11 @@ export default function VisualsGallery() {
 
   const isWheels = displayMode === 'wheels'
 
+  // User request: In tow trucking mode, remove visuals
+  if (!isWheels) {
+    return null
+  }
+
   const wheelVisuals = [
     {
       src: '/site-images/gallery-speedo.jpg',

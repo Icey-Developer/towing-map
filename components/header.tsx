@@ -19,7 +19,6 @@ export default function Header() {
   const navItems = mode === 'wheels'
     ? [
         { name: 'Wheels', href: '#wheels' },
-        { name: 'Brands', href: '#brands' },
         { name: 'Spares', href: '#spares' },
         { name: 'Gallery', href: '#gallery' },
         { name: 'Contact', href: '#contact' },
