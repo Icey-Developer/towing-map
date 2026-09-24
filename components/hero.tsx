@@ -23,10 +23,10 @@ export default function Hero() {
   const isWheels = displayMode === 'wheels'
 
   return (
-    <section className="relative w-full pt-24 pb-12 lg:pt-32 lg:pb-16 bg-white overflow-hidden border-b border-neutral-100 min-h-[700px] lg:min-h-[820px] xl:min-h-[920px] flex items-center">
-      <div className="relative z-10 w-full mx-auto max-w-[1500px] px-6 lg:px-10">
-        {/* Main Grid: Editorial Typography on Left + 10x Scaled Pure White Seamless Vehicle/Wheel on Right */}
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-4 items-center">
+    <section className="relative w-full pt-28 pb-16 lg:pt-36 lg:pb-20 bg-white overflow-hidden border-b border-neutral-100 min-h-[480px] lg:min-h-[540px] flex items-center">
+      <div className="relative z-10 w-full mx-auto max-w-[1400px] px-6 lg:px-10">
+        {/* Main Grid: Editorial Typography on Left + Pure White Seamless Vehicle/Wheel on Right */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           {/* Left Column: Big Editorial Typography + Paragraph + Mode Switcher */}
           <div
             className="lg:col-span-5 z-20 relative transition-all duration-400"
@@ -140,21 +140,21 @@ export default function Hero() {
             )}
           </div>
 
-          {/* Right Column: Hero Showcase on Pure Seamless White Background - 10x Scaled to Fill Entire Space */}
-          <div className="lg:col-span-7 relative w-full h-[540px] sm:h-[660px] lg:h-[780px] xl:h-[900px] 2xl:h-[1000px] flex items-center justify-center lg:justify-end bg-white">
-            <div className="relative w-full h-full lg:w-[145%] xl:w-[170%] 2xl:w-[190%] lg:-mr-24 xl:-mr-44 2xl:-mr-64 pointer-events-none crossfade-container flex items-center justify-center lg:justify-end">
+          {/* Right Column: Hero Showcase on Pure Seamless White Background - Scaled 5x smaller to balanced size */}
+          <div className="lg:col-span-7 relative w-full h-[360px] sm:h-[440px] lg:h-[500px] xl:h-[560px] flex items-center justify-center lg:justify-end bg-white">
+            <div className="relative w-full h-full pointer-events-none crossfade-container flex items-center justify-center lg:justify-end">
               {/* Wheels Service: Wheel with skid mark on pure solid white background */}
               <div
                 className={`crossfade-layer flex items-center justify-center lg:justify-end ${
                   isWheels ? 'active' : 'inactive'
                 }`}
               >
-                <div className="relative w-full h-full transform scale-150 sm:scale-175 lg:scale-215 xl:scale-245 2xl:scale-270 origin-center lg:origin-[68%_52%] transition-transform duration-700">
+                <div className="relative w-full h-full transform scale-100 sm:scale-105 lg:scale-110 origin-center transition-transform duration-500">
                   <Image
                     src="/hero-wheel-skidmark.jpg"
                     alt="Forged performance wheel with tyre and rubber skid mark on pure white background"
                     fill
-                    sizes="(max-width: 1024px) 100vw, 90vw"
+                    sizes="(max-width: 1024px) 100vw, 55vw"
                     className="object-contain object-center lg:object-right"
                     priority
                     unoptimized
@@ -168,12 +168,12 @@ export default function Hero() {
                   !isWheels ? 'active' : 'inactive'
                 }`}
               >
-                <div className="relative w-full h-full transform scale-140 sm:scale-165 lg:scale-195 xl:scale-220 2xl:scale-240 origin-center lg:origin-[72%_50%] transition-transform duration-700">
+                <div className="relative w-full h-full transform scale-100 sm:scale-105 lg:scale-110 origin-center transition-transform duration-500">
                   <Image
                     src="/hero-tow-truck-white.jpg"
                     alt="Elite Towing & Recovery flatbed commercial tow truck on pure white background"
                     fill
-                    sizes="(max-width: 1024px) 100vw, 90vw"
+                    sizes="(max-width: 1024px) 100vw, 55vw"
                     className="object-contain object-center lg:object-right"
                     priority
                     unoptimized
