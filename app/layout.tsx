@@ -3,9 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Elite Tow & Wheels | Towing & Wheel Services',
-  description: 'Professional towing, logistics, and quality wheels & tyres. Available 24/7 with 30-minute average arrival. Buy, sell, and fit wheels with expert service.',
-  generator: 'v0.app',
+  title: 'Elite | Premium Wheels, Performance Tyres & 24/7 Towing Service',
+  description: 'Shop luxury forged alloy wheels, racing tyres, and request 24/7 emergency flatbed towing and roadside assistance.',
   icons: {
     icon: [
       {
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: 'light',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#1e3a5f' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
   ],
 }
 
@@ -39,6 +38,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

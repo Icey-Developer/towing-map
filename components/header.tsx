@@ -1,59 +1,156 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Phone } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Menu, X, ShoppingBag, Phone, Search, User } from 'lucide-react'
+import { useMode } from './mode-context'
 
 export default function Header() {
+  const { mode, setMode } = useMode()
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navItems = mode === 'wheels'
+    ? [
+        { name: 'Wheels', href: '#wheels' },
+        { name: 'Brands', href: '#brands' },
+        { name: 'Spares', href: '#spares' },
+        { name: 'Gallery', href: '#gallery' },
+        { name: 'Contact', href: '#contact' },
+      ]
+    : [
+        { name: 'Towing', href: '#services' },
+        { name: 'Fleet', href: '#fleet' },
+        { name: 'Roadside', href: '#roadside' },
+        { name: 'Coverage', href: '#coverage' },
+        { name: 'Contact', href: '#contact' },
+      ]
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white shadow-sm">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600">
-              <Phone className="h-6 w-6 text-white" />
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-neutral-200/80 py-3.5'
+          : 'bg-white/80 backdrop-blur-sm py-5'
+      }`}
+    >
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+        <div className="flex items-center justify-between">
+          {/* Logo with slanted editorial slash mark */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative flex items-center justify-center w-9 h-9">
+              <div
+                className={`w-[4px] h-7 rounded-sm transform -skew-x-12 transition-colors duration-400 ${
+                  mode === 'towing' ? 'bg-amber-500' : 'bg-neutral-900'
+                }`}
+              />
+              <div
+                className={`w-[3px] h-5 rounded-sm transform -skew-x-12 ml-1 opacity-60 transition-colors duration-400 ${
+                  mode === 'towing' ? 'bg-amber-400' : 'bg-neutral-600'
+                }`}
+              />
             </div>
-            <span className="hidden sm:inline">
-              <span className="text-slate-900">ELITE</span>
-              <span className="text-cyan-500"> TOW</span>
-              <span className="text-slate-900"> & WHEELS</span>
-            </span>
-            <span className="sm:hidden">
-              <span className="text-slate-900">ELITE</span>
-              <span className="text-cyan-500">TOW</span>
-            </span>
+            <div className="flex flex-col">
+              <span
+                className="text-neutral-950 font-black text-xl tracking-[0.12em] uppercase leading-none"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                ELITE
+              </span>
+              <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-500 font-semibold mt-0.5">
+                {mode === 'wheels' ? 'Wheels & Performance' : 'Towing & Recovery'}
+              </span>
+            </div>
           </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="#services" className="text-slate-600 hover:text-slate-900 transition">
-              Services
-            </Link>
-            <Link href="#wheels" className="text-slate-600 hover:text-slate-900 transition">
-              Wheels & Tyres
-            </Link>
-            <Link href="#why-us" className="text-slate-600 hover:text-slate-900 transition">
-              Why Us
-            </Link>
-            <Link href="#reviews" className="text-slate-600 hover:text-slate-900 transition">
-              Reviews
-            </Link>
-            <Link href="#contact" className="text-slate-600 hover:text-slate-900 transition">
-              Contact
-            </Link>
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-9">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-neutral-600 text-xs font-semibold uppercase tracking-[0.18em] hover:text-neutral-950 transition-colors duration-200 relative group py-1"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                {item.name}
+                <span
+                  className={`absolute bottom-0 left-0 w-0 h-[2px] rounded-full group-hover:w-full transition-all duration-300 ${
+                    mode === 'towing' ? 'bg-amber-500' : 'bg-neutral-900'
+                  }`}
+                />
+              </Link>
+            ))}
           </nav>
 
-          {/* CTA Button */}
-          <Button
-            className="bg-cyan-500 hover:bg-cyan-600 text-white gap-2 ml-4"
-            asChild
-          >
-            <a href="tel:+1-800-555-1234">
-              <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">(800) 555-1234</span>
-            </a>
-          </Button>
+          {/* Right Actions */}
+          <div className="flex items-center gap-4">
+            <button
+              className="w-9 h-9 rounded-full flex items-center justify-center text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
+              aria-label="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+            <button
+              className="w-9 h-9 rounded-full flex items-center justify-center text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
+              aria-label="Account"
+            >
+              <User className="w-4 h-4" />
+            </button>
+
+            {mode === 'towing' ? (
+              <a
+                href="tel:+18005551234"
+                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-colors shadow-sm"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                <Phone className="w-3.5 h-3.5 fill-current" />
+                <span>24/7 Dispatch</span>
+              </a>
+            ) : (
+              <button
+                className="relative w-9 h-9 rounded-full flex items-center justify-center text-neutral-800 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
+                aria-label="Cart"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-neutral-950" />
+              </button>
+            )}
+
+            {/* Mobile menu trigger */}
+            <button
+              className="lg:hidden w-9 h-9 flex items-center justify-center text-neutral-800 hover:bg-neutral-100 rounded-full"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle navigation"
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ${
+          menuOpen ? 'max-h-80 border-b border-neutral-200 bg-white/95' : 'max-h-0'
+        }`}
+      >
+        <div className="px-6 py-4 flex flex-col gap-3">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-neutral-700 text-sm font-semibold uppercase tracking-wider py-2 border-b border-neutral-100"
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
       </div>
     </header>

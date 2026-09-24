@@ -1,91 +1,356 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { Phone, ArrowRight } from 'lucide-react'
+import { useMode } from './mode-context'
+import { useEffect, useState } from 'react'
+import {
+  Car,
+  CircleDot,
+  Wrench,
+  Gauge,
+  Disc,
+  Truck,
+  ShieldAlert,
+  BatteryCharging,
+  Key,
+  Compass,
+  ArrowRight,
+  PhoneCall,
+} from 'lucide-react'
 
 export default function Hero() {
+  const { mode, setMode } = useMode()
+  const [contentVisible, setContentVisible] = useState(true)
+  const [displayMode, setDisplayMode] = useState(mode)
+
+  useEffect(() => {
+    if (mode !== displayMode) {
+      setContentVisible(false)
+      const timer = setTimeout(() => {
+        setDisplayMode(mode)
+        setTimeout(() => setContentVisible(true), 40)
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [mode, displayMode])
+
+  const isWheels = displayMode === 'wheels'
+
+  const categoriesWheels = [
+    { label: 'Cars', icon: Car },
+    { label: 'Wheels', icon: CircleDot },
+    { label: 'Suspension', icon: Gauge },
+    { label: 'Parts', icon: Wrench },
+    { label: 'Tyres', icon: Disc },
+  ]
+
+  const categoriesTowing = [
+    { label: '24/7 Tow', icon: Truck },
+    { label: 'Flatbed', icon: ShieldAlert },
+    { label: 'Roadside', icon: Wrench },
+    { label: 'Battery', icon: BatteryCharging },
+    { label: 'Lockout', icon: Key },
+  ]
+
+  const categories = isWheels ? categoriesWheels : categoriesTowing
+
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800 pt-20 pb-32">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/tow-truck-hero.png"
-          alt="Heavy-duty tow truck driving on a wet highway at night with amber light trails"
-          fill
-          className="object-cover opacity-40"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent"></div>
-      </div>
+    <section className="relative w-full pt-28 pb-14 lg:pt-36 lg:pb-20 bg-[#fafafa] overflow-hidden border-b border-neutral-200/60">
+      {/* Subtle background ambient styling */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-neutral-200/40 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 left-10 w-[400px] h-[400px] bg-neutral-200/30 rounded-full blur-2xl pointer-events-none" />
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-          <div className="space-y-8">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-400">
-              <div className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></div>
-              AVAILABLE 24 HOURS · 7 DAYS A WEEK
-            </div>
-
-            {/* Heading */}
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                WE TOW,
-                <br />
-                HAUL &<br />
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  DEAL IN WHEELS
-                </span>
-                .
-              </h1>
-              <p className="text-lg text-slate-300 max-w-md">
-                Towing, logistics and transportation, plus buying and selling quality wheels and tyres. Elite Tow & Wheels keeps you moving on and off the road, one call away, day or night.
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button
-                size="lg"
-                className="bg-cyan-500 hover:bg-cyan-600 text-white gap-2"
-                asChild
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-10">
+        {/* Dual Mode Switcher - Prominent Light Pill */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 lg:mb-12">
+          <div className="inline-flex items-center gap-3">
+            <span
+              className="text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-bold"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Select Service Mode:
+            </span>
+            <div className="mode-toggle-light">
+              <div
+                className={`toggle-pill ${
+                  mode === 'wheels' ? 'left' : 'right'
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setMode('wheels')}
+                className={mode === 'wheels' ? 'active' : ''}
               >
-                <a href="tel:+1-800-555-1234">
-                  <Phone className="h-5 w-5" />
-                  Call for a Tow Now
-                </a>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-slate-600 bg-transparent text-white hover:bg-white/10 gap-2"
+                Wheels & Parts
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('towing')}
+                className={mode === 'towing' ? 'active' : ''}
               >
-                View Services
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8">
-              <div>
-                <div className="text-2xl font-bold text-cyan-400">30 min</div>
-                <div className="text-sm text-slate-400">Avg. arrival</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-cyan-400">500+</div>
-                <div className="text-sm text-slate-400">Wheels in stock</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-cyan-400">24/7</div>
-                <div className="text-sm text-slate-400">Live dispatch</div>
-              </div>
+                Tow Truck & 24/7
+              </button>
             </div>
           </div>
 
-          {/* Right side spacing for background image visibility */}
-          <div className="hidden lg:block"></div>
+          <div className="hidden md:flex items-center gap-2 text-xs font-semibold text-neutral-500">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                mode === 'towing' ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'
+              }`}
+            />
+            <span>
+              {mode === 'towing'
+                ? 'Tow Dispatch Active: Average 30 min ETA'
+                : 'Over 500+ Luxury Wheel Sets in Stock'}
+            </span>
+          </div>
+        </div>
+
+        {/* Hero Main Grid: Massive Typography on Left + Vehicle on Right */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[460px] lg:min-h-[520px]">
+          {/* Left Column: Big Editorial Typography */}
+          <div
+            className="lg:col-span-6 transition-all duration-400"
+            style={{
+              opacity: contentVisible ? 1 : 0,
+              transform: contentVisible ? 'translateY(0)' : 'translateY(16px)',
+            }}
+          >
+            {isWheels ? (
+              <div>
+                {/* 3 Tier Typography: MAKE / SELL / EARN with vertical labels */}
+                <div className="space-y-1 mb-8 select-none">
+                  {/* Line 1: MAKE STORE */}
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
+                      style={{ letterSpacing: '-0.04em' }}
+                    >
+                      MAKE
+                    </span>
+                    <span
+                      className="text-editorial-vertical text-neutral-400 uppercase font-bold"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      STORE
+                    </span>
+                  </div>
+
+                  {/* Line 2: SELL PARTS */}
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
+                      style={{ letterSpacing: '-0.04em' }}
+                    >
+                      SELL
+                    </span>
+                    <span
+                      className="text-editorial-vertical text-neutral-400 uppercase font-bold"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      PARTS
+                    </span>
+                  </div>
+
+                  {/* Line 3: EARN MONEY */}
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
+                      style={{ letterSpacing: '-0.04em' }}
+                    >
+                      EARN
+                    </span>
+                    <span
+                      className="text-editorial-vertical text-neutral-400 uppercase font-bold"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      MONEY
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-neutral-600 text-sm sm:text-base leading-relaxed max-w-md mb-8">
+                  Your premier destination for high-performance forged wheels,
+                  bespoke motorsport fitments, and certified spares tailored for
+                  the world’s elite automobiles.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <a
+                    href="#wheels"
+                    className="inline-flex items-center gap-2 bg-neutral-950 hover:bg-neutral-800 text-white px-7 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md group"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    <span>Browse Collection</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <a
+                    href="#brands"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-800 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    View Brands
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {/* 3 Tier Typography in Towing Mode: FAST / SAFE / MOVE */}
+                <div className="space-y-1 mb-8 select-none">
+                  {/* Line 1: FAST 24/7 */}
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
+                      style={{ letterSpacing: '-0.04em' }}
+                    >
+                      FAST
+                    </span>
+                    <span
+                      className="text-editorial-vertical text-amber-500 uppercase font-bold"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      24/7
+                    </span>
+                  </div>
+
+                  {/* Line 2: SAFE HAUL */}
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
+                      style={{ letterSpacing: '-0.04em' }}
+                    >
+                      SAFE
+                    </span>
+                    <span
+                      className="text-editorial-vertical text-amber-500 uppercase font-bold"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      HAUL
+                    </span>
+                  </div>
+
+                  {/* Line 3: MOVE RESCUE */}
+                  <div className="flex items-baseline gap-3">
+                    <span
+                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
+                      style={{ letterSpacing: '-0.04em' }}
+                    >
+                      MOVE
+                    </span>
+                    <span
+                      className="text-editorial-vertical text-amber-500 uppercase font-bold"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      RESCUE
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-neutral-600 text-sm sm:text-base leading-relaxed max-w-md mb-8">
+                  State-of-the-art flatbed towing, rapid highway recovery, and
+                  damage-free wheel-lift service. Day or night, our GPS fleet arrives
+                  in 30 minutes or less.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <a
+                    href="tel:+18005551234"
+                    className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-neutral-950 px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md group"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    <PhoneCall className="w-4 h-4" />
+                    <span>Call 24/7 Dispatch</span>
+                  </a>
+                  <a
+                    href="#services"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-800 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    View Tow Services
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column: Hero Vehicle Showcase (Porsche vs Tow Truck) */}
+          <div className="lg:col-span-6 relative w-full h-[320px] sm:h-[400px] lg:h-[480px] flex items-center justify-center">
+            {/* Soft shadow platform */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-8 bg-black/15 rounded-full blur-xl pointer-events-none" />
+
+            <div className="relative w-full h-full crossfade-container">
+              {/* Wheels Vehicle: Silver Sports Car */}
+              <div
+                className={`crossfade-layer flex items-center justify-center ${
+                  isWheels ? 'active' : 'inactive'
+                }`}
+              >
+                <div className="relative w-full h-full max-h-[460px]">
+                  <Image
+                    src="/hero-car.jpg"
+                    alt="Silver luxury sports car on clean white editorial background"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </div>
+
+              {/* Towing Vehicle: Heavy Duty Tow Truck */}
+              <div
+                className={`crossfade-layer flex items-center justify-center ${
+                  !isWheels ? 'active' : 'inactive'
+                }`}
+              >
+                <div className="relative w-full h-full max-h-[460px]">
+                  <Image
+                    src="/tow-truck-hero.png"
+                    alt="Professional heavy duty flatbed tow truck"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Category Selector Strip - Matches the reference screenshot layout! */}
+        <div className="mt-12 lg:mt-16 pt-8 border-t border-neutral-200/80">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 lg:gap-4">
+            {categories.map((cat, idx) => {
+              const IconComp = cat.icon
+              return (
+                <div
+                  key={cat.label}
+                  className="group relative flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl bg-white border border-neutral-200/80 hover:border-neutral-900/40 hover:shadow-md transition-all duration-200 cursor-pointer"
+                >
+                  <div
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center mb-2.5 transition-colors duration-200 ${
+                      !isWheels
+                        ? 'bg-amber-50 group-hover:bg-amber-100 text-amber-700'
+                        : 'bg-neutral-100 group-hover:bg-neutral-950 group-hover:text-white text-neutral-700'
+                    }`}
+                  >
+                    <IconComp className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
+                  </div>
+                  <span
+                    className="text-xs font-bold text-neutral-800 uppercase tracking-wider"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    {cat.label}
+                  </span>
+                  <span className="text-[10px] text-neutral-400 mt-0.5">
+                    {isWheels ? `0${idx + 1} Collection` : `Available 24/7`}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

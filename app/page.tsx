@@ -1,23 +1,30 @@
 import Header from '@/components/header'
 import Hero from '@/components/hero'
-import WhatWeDo from '@/components/what-we-do'
-import Wheels from '@/components/wheels'
-import WhyUs from '@/components/why-us'
-import Reviews from '@/components/reviews'
-import Cta from '@/components/cta'
+import QualitySection from '@/components/quality-section'
+import Brands from '@/components/brands'
+import ExploreParts from '@/components/explore-parts'
+import ParallaxBanner from '@/components/parallax-banner'
+import SafetyGear from '@/components/safety-gear'
+import VisualsGallery from '@/components/visuals-gallery'
+import ProductSpotlight from '@/components/product-spotlight'
 import Footer from '@/components/footer'
+import { ModeProvider } from '@/components/mode-context'
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <Hero />
-      <WhatWeDo />
-      <Wheels />
-      <WhyUs />
-      <Reviews />
-      <Cta />
-      <Footer />
-    </div>
+    <ModeProvider>
+      <div className="min-h-screen bg-white">
+        <Header />
+        <Hero />
+        <QualitySection />
+        <Brands />
+        <ExploreParts />
+        <ParallaxBanner />
+        <SafetyGear />
+        <VisualsGallery />
+        <ProductSpotlight />
+        <Footer />
+      </div>
+    </ModeProvider>
   )
 }
