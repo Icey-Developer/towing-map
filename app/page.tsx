@@ -8,7 +8,6 @@ import SafetyGear from '@/components/safety-gear'
 import VisualsGallery from '@/components/visuals-gallery'
 import ProductSpotlight from '@/components/product-spotlight'
 import Footer from '@/components/footer'
-import GlobalModals from '@/components/modals'
 import { ModeProvider } from '@/components/mode-context'
 
 export default function Page() {
@@ -25,7 +24,6 @@ export default function Page() {
         <VisualsGallery />
         <ProductSpotlight />
         <Footer />
-        <GlobalModals />
       </div>
     </ModeProvider>
   )

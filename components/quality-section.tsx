@@ -10,11 +10,6 @@ export default function QualitySection() {
   const [visible, setVisible] = useState(true)
   const [displayMode, setDisplayMode] = useState(mode)
 
-  // Interactive Wheel Finish Swatches
-  const [wheelFinish, setWheelFinish] = useState<'gunmetal' | 'bronze' | 'black' | 'silver'>('gunmetal')
-  // Interactive Tow Rig Option
-  const [towRig, setTowRig] = useState<'flatbed' | 'wrecker' | 'wheel-lift'>('flatbed')
-
   useEffect(() => {
     if (mode !== displayMode) {
       setVisible(false)
@@ -27,19 +22,6 @@ export default function QualitySection() {
   }, [mode, displayMode])
 
   const isWheels = displayMode === 'wheels'
-
-  const wheelFinishes = [
-    { id: 'gunmetal', label: 'Gunmetal Grey', color: '#4a4d52', spec: 'T6061 Forged • 9.8kg' },
-    { id: 'bronze', label: 'Satin Bronze', color: '#8c6d46', spec: 'Motorsport Spec • 9.6kg' },
-    { id: 'black', label: 'Gloss Black', color: '#111111', spec: 'Diamond Cut Lip • 10.1kg' },
-    { id: 'silver', label: 'Brushed Silver', color: '#d1d5db', spec: 'High Polish Coat • 9.7kg' },
-  ]
-
-  const towRigs = [
-    { id: 'flatbed', label: 'Zero-Incline Flatbed', spec: 'Hydraulic Ramp • Lowered & Exotic Safe' },
-    { id: 'wrecker', label: 'Heavy Duty Wrecker', spec: 'Twin 35-Ton Winches • Semi & RV' },
-    { id: 'wheel-lift', label: 'Underground Lift', spec: '6ft Clearance • Parking Garage Safe' },
-  ]
 
   const content = isWheels
     ? {
@@ -80,7 +62,7 @@ export default function QualitySection() {
         left: [
           {
             icon: Clock,
-            title: '20-MIN AVERAGE',
+            title: '30-MIN AVERAGE',
             subtitle: 'ARRIVAL TIME',
             desc: 'GPS tracked dispatch finds the closest tow unit to your breakdown location in seconds.',
           },
@@ -108,9 +90,9 @@ export default function QualitySection() {
       }
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-white overflow-hidden border-b border-neutral-200/60">
+    <section className="w-full py-20 lg:py-28 bg-white overflow-hidden">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        {/* Editorial Heading with Bebas Neue font */}
+        {/* Editorial Heading */}
         <div
           className="text-center mb-16 lg:mb-20 transition-all duration-400"
           style={{
@@ -118,20 +100,20 @@ export default function QualitySection() {
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
           }}
         >
-          <div className="inline-flex items-center gap-3 mb-3">
+          <div className="inline-flex items-center gap-3 mb-4">
             <span className="w-8 h-[1px] bg-neutral-300" />
             <span
               className="text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-bold"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              — 01 // {isWheels ? 'STRICT STANDARDS' : 'RAPID FLEET'} —
+              {isWheels ? 'Strict Standards' : 'Rapid Response'}
             </span>
             <span className="w-8 h-[1px] bg-neutral-300" />
           </div>
 
           <h2
-            className="text-editorial text-6xl sm:text-7xl lg:text-8xl text-neutral-950 uppercase tracking-wide"
-            style={{ lineHeight: '0.92' }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-neutral-950 uppercase tracking-tight"
+            style={{ fontFamily: 'var(--font-heading)', lineHeight: '1.05' }}
           >
             {content.title1}{' '}
             <span className={isWheels ? 'text-neutral-400' : 'text-amber-500'}>
@@ -140,7 +122,7 @@ export default function QualitySection() {
           </h2>
         </div>
 
-        {/* 3 Column Layout matching screenshot */}
+        {/* 3 Column Layout matching screenshot: Left features, Center wheel/truck, Right features */}
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
           {/* Left Feature Column */}
           <div
@@ -174,101 +156,48 @@ export default function QualitySection() {
             })}
           </div>
 
-          {/* Center Column: The Large Alloy Wheel / Tow Truck with Interactive Swatches */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center">
-            <div className="relative aspect-square max-w-[420px] w-full flex items-center justify-center">
-              {/* Soft drop shadow */}
-              <div className="absolute bottom-6 w-3/4 h-8 bg-black/10 rounded-full blur-xl pointer-events-none" />
+          {/* Center Column: The Large Alloy Wheel / Tow Truck */}
+          <div className="lg:col-span-6 relative aspect-square max-w-[420px] mx-auto w-full flex items-center justify-center">
+            {/* Soft drop shadow */}
+            <div className="absolute bottom-6 w-3/4 h-8 bg-black/10 rounded-full blur-xl pointer-events-none" />
 
-              <div className="relative w-full h-full crossfade-container">
-                {/* Wheels Centerpiece: Alloy Wheel */}
-                <div
-                  className={`crossfade-layer flex items-center justify-center ${
-                    isWheels ? 'active' : 'inactive'
-                  }`}
-                >
-                  <div className="relative w-full h-full max-h-[380px]">
-                    <Image
-                      src="/alloy-wheel-new.jpg"
-                      alt="Forged multi-spoke alloy wheel in gunmetal grey"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="object-contain hover:scale-105 transition-transform duration-700"
-                      priority
-                    />
-                  </div>
+            <div className="relative w-full h-full crossfade-container">
+              {/* Wheels Centerpiece: Alloy Wheel */}
+              <div
+                className={`crossfade-layer flex items-center justify-center ${
+                  isWheels ? 'active' : 'inactive'
+                }`}
+              >
+                <div className="relative w-full h-full max-h-[380px]">
+                  <Image
+                    src="/alloy-wheel-new.jpg"
+                    alt="Forged multi-spoke alloy wheel in gunmetal grey"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-contain hover:scale-105 transition-transform duration-700"
+                    priority
+                  />
                 </div>
+              </div>
 
-                {/* Towing Centerpiece: Heavy Tow Truck */}
-                <div
-                  className={`crossfade-layer flex items-center justify-center ${
-                    !isWheels ? 'active' : 'inactive'
-                  }`}
-                >
-                  <div className="relative w-full h-full max-h-[380px]">
-                    <Image
-                      src="/tow-truck-hero.png"
-                      alt="Elite 24/7 recovery tow truck"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="object-contain hover:scale-105 transition-transform duration-700"
-                      priority
-                    />
-                  </div>
+              {/* Towing Centerpiece: Heavy Tow Truck */}
+              <div
+                className={`crossfade-layer flex items-center justify-center ${
+                  !isWheels ? 'active' : 'inactive'
+                }`}
+              >
+                <div className="relative w-full h-full max-h-[380px]">
+                  <Image
+                    src="/tow-truck-hero.png"
+                    alt="Elite 24/7 recovery tow truck"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-contain hover:scale-105 transition-transform duration-700"
+                    priority
+                  />
                 </div>
               </div>
             </div>
-
-            {/* Interactive Swatch Pill Switcher beneath centerpiece */}
-            <div className="mt-4 p-2 rounded-2xl bg-neutral-100/80 border border-neutral-200/80 flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
-              <span className="text-[10px] uppercase font-bold text-neutral-500 tracking-wider px-2">
-                {isWheels ? 'Finish:' : 'Fleet Class:'}
-              </span>
-
-              {isWheels ? (
-                <div className="flex items-center gap-1.5">
-                  {wheelFinishes.map((f) => (
-                    <button
-                      key={f.id}
-                      onClick={() => setWheelFinish(f.id as any)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                        wheelFinish === f.id
-                          ? 'bg-white shadow-xs text-neutral-950 font-bold'
-                          : 'text-neutral-500 hover:text-neutral-900'
-                      }`}
-                    >
-                      <span
-                        className="w-2.5 h-2.5 rounded-full border border-black/20"
-                        style={{ backgroundColor: f.color }}
-                      />
-                      <span>{f.label}</span>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5">
-                  {towRigs.map((r) => (
-                    <button
-                      key={r.id}
-                      onClick={() => setTowRig(r.id as any)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                        towRig === r.id
-                          ? 'bg-amber-500 text-neutral-950 font-bold shadow-xs'
-                          : 'text-neutral-600 hover:text-neutral-900'
-                      }`}
-                    >
-                      {r.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <p className="text-[11px] text-neutral-400 mt-2 font-medium">
-              {isWheels
-                ? wheelFinishes.find((f) => f.id === wheelFinish)?.spec
-                : towRigs.find((r) => r.id === towRig)?.spec}
-            </p>
           </div>
 
           {/* Right Feature Column */}

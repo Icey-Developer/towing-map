@@ -80,9 +80,9 @@ export default function SafetyGear() {
   const articles = isWheels ? wheelArticles : towArticles
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#fafafa] border-b border-neutral-200/60">
+    <section className="w-full py-20 lg:py-28 bg-[#fafafa]">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        {/* Section Header with Bebas Neue font */}
+        {/* Section Header */}
         <div
           className="text-center mb-16 transition-all duration-400"
           style={{
@@ -90,20 +90,20 @@ export default function SafetyGear() {
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
           }}
         >
-          <div className="inline-flex items-center gap-3 mb-3">
+          <div className="inline-flex items-center gap-3 mb-4">
             <span className="w-8 h-[1px] bg-neutral-300" />
             <span
               className="text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-bold"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              — 05 // {isWheels ? 'EDITORIAL KNOWLEDGE' : 'DISPATCH PROTOCOLS'} —
+              {isWheels ? 'Editorial Knowledge' : 'Driver Knowledge & Fleet Guides'}
             </span>
             <span className="w-8 h-[1px] bg-neutral-300" />
           </div>
 
           <h2
-            className="text-editorial text-6xl sm:text-7xl lg:text-8xl text-neutral-950 uppercase tracking-wide"
-            style={{ lineHeight: '0.92' }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-neutral-950 uppercase tracking-tight"
+            style={{ fontFamily: 'var(--font-heading)', lineHeight: '1.05' }}
           >
             {isWheels ? 'PERFORMANCE JOURNAL' : 'RESCUE DISPATCH LOGS'}
           </h2>
@@ -131,7 +131,7 @@ export default function SafetyGear() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-106 transition-transform duration-600"
                 />
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5 shadow-xs">
+                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5 shadow-sm">
                   <Tag className="w-3 h-3 text-neutral-600" />
                   <span>{item.category}</span>
                 </div>

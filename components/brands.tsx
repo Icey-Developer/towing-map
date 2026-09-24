@@ -73,9 +73,9 @@ export default function Brands() {
   const cards = isWheels ? wheelBrands : towFleets
 
   return (
-    <section id="brands" className="w-full py-20 lg:py-28 bg-[#fafafa] border-b border-neutral-200/80">
+    <section id="brands" className="w-full py-20 lg:py-28 bg-[#fafafa] border-y border-neutral-200/80">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        {/* Section Heading with Bebas Neue font */}
+        {/* Section Heading */}
         <div
           className="text-center mb-16 transition-all duration-400"
           style={{
@@ -83,20 +83,20 @@ export default function Brands() {
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
           }}
         >
-          <div className="inline-flex items-center gap-3 mb-3">
+          <div className="inline-flex items-center gap-3 mb-4">
             <span className="w-8 h-[1px] bg-neutral-300" />
             <span
               className="text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-bold"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              — 03 // {isWheels ? 'CERTIFIED PARTNERSHIPS' : 'COMMERCIAL CAPABILITIES'} —
+              {isWheels ? 'Certified Partnerships' : 'Specialized Equipment'}
             </span>
             <span className="w-8 h-[1px] bg-neutral-300" />
           </div>
 
           <h2
-            className="text-editorial text-6xl sm:text-7xl lg:text-8xl text-neutral-950 uppercase tracking-wide"
-            style={{ lineHeight: '0.92' }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-neutral-950 uppercase tracking-tight"
+            style={{ fontFamily: 'var(--font-heading)', lineHeight: '1.05' }}
           >
             {isWheels ? 'PREMIUM BRANDS' : 'FLEET CAPABILITIES'}
           </h2>
@@ -110,7 +110,7 @@ export default function Brands() {
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
           }}
         >
-          {cards.map((item) => (
+          {cards.map((item, index) => (
             <div
               key={item.name}
               className="group flex flex-col items-center bg-white rounded-3xl p-4 sm:p-5 border border-neutral-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
