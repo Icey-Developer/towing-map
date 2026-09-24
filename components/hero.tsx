@@ -13,13 +13,19 @@ import {
   ShieldAlert,
   BatteryCharging,
   Key,
-  Compass,
   ArrowRight,
   PhoneCall,
+  Calculator,
 } from 'lucide-react'
 
 export default function Hero() {
-  const { mode, setMode } = useMode()
+  const {
+    mode,
+    setMode,
+    selectedCategory,
+    setSelectedCategory,
+    setIsDispatchModalOpen,
+  } = useMode()
   const [contentVisible, setContentVisible] = useState(true)
   const [displayMode, setDisplayMode] = useState(mode)
 
@@ -37,27 +43,35 @@ export default function Hero() {
   const isWheels = displayMode === 'wheels'
 
   const categoriesWheels = [
-    { label: 'Cars', icon: Car },
-    { label: 'Wheels', icon: CircleDot },
-    { label: 'Suspension', icon: Gauge },
-    { label: 'Parts', icon: Wrench },
-    { label: 'Tyres', icon: Disc },
+    { id: 'all', label: 'All Parts', icon: Car },
+    { id: 'wheels', label: 'Alloy Wheels', icon: CircleDot },
+    { id: 'suspension', label: 'Suspension', icon: Gauge },
+    { id: 'brakes', label: 'Brakes & Spares', icon: Wrench },
+    { id: 'tyres', label: 'Performance Tyres', icon: Disc },
   ]
 
   const categoriesTowing = [
-    { label: '24/7 Tow', icon: Truck },
-    { label: 'Flatbed', icon: ShieldAlert },
-    { label: 'Roadside', icon: Wrench },
-    { label: 'Battery', icon: BatteryCharging },
-    { label: 'Lockout', icon: Key },
+    { id: 'all', label: 'All Services', icon: Truck },
+    { id: 'flatbed', label: 'Flatbed Tow', icon: ShieldAlert },
+    { id: 'heavy', label: 'Heavy Duty', icon: Truck },
+    { id: 'battery', label: 'Battery Boost', icon: BatteryCharging },
+    { id: 'lockout', label: 'Lockout Assist', icon: Key },
   ]
 
   const categories = isWheels ? categoriesWheels : categoriesTowing
 
+  const handleCategoryClick = (id: string) => {
+    setSelectedCategory(id)
+    const el = document.getElementById('wheels')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <section className="relative w-full pt-28 pb-14 lg:pt-36 lg:pb-20 bg-[#fafafa] overflow-hidden border-b border-neutral-200/60">
-      {/* Subtle background ambient styling */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-neutral-200/40 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+      {/* Subtle ambient lighting */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-neutral-200/50 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-20 left-10 w-[400px] h-[400px] bg-neutral-200/30 rounded-full blur-2xl pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-10">
@@ -101,15 +115,15 @@ export default function Hero() {
             />
             <span>
               {mode === 'towing'
-                ? 'Tow Dispatch Active: Average 30 min ETA'
+                ? 'Tow Dispatch Active: Average 22 min ETA'
                 : 'Over 500+ Luxury Wheel Sets in Stock'}
             </span>
           </div>
         </div>
 
         {/* Hero Main Grid: Massive Typography on Left + Vehicle on Right */}
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[460px] lg:min-h-[520px]">
-          {/* Left Column: Big Editorial Typography */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[460px] lg:min-h-[500px]">
+          {/* Left Column: Big Editorial Condensed Typography matching reference */}
           <div
             className="lg:col-span-6 transition-all duration-400"
             style={{
@@ -119,13 +133,12 @@ export default function Hero() {
           >
             {isWheels ? (
               <div>
-                {/* 3 Tier Typography: MAKE / SELL / EARN with vertical labels */}
-                <div className="space-y-1 mb-8 select-none">
+                {/* 3 Tier Condensed Typography: MAKE / SELL / EARN with vertical labels */}
+                <div className="space-y-0.5 mb-8 select-none">
                   {/* Line 1: MAKE STORE */}
                   <div className="flex items-baseline gap-3">
                     <span
-                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
-                      style={{ letterSpacing: '-0.04em' }}
+                      className="text-editorial text-8xl sm:text-9xl xl:text-[140px] text-neutral-950 font-normal leading-none"
                     >
                       MAKE
                     </span>
@@ -140,8 +153,7 @@ export default function Hero() {
                   {/* Line 2: SELL PARTS */}
                   <div className="flex items-baseline gap-3">
                     <span
-                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
-                      style={{ letterSpacing: '-0.04em' }}
+                      className="text-editorial text-8xl sm:text-9xl xl:text-[140px] text-neutral-950 font-normal leading-none"
                     >
                       SELL
                     </span>
@@ -156,8 +168,7 @@ export default function Hero() {
                   {/* Line 3: EARN MONEY */}
                   <div className="flex items-baseline gap-3">
                     <span
-                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
-                      style={{ letterSpacing: '-0.04em' }}
+                      className="text-editorial text-8xl sm:text-9xl xl:text-[140px] text-neutral-950 font-normal leading-none"
                     >
                       EARN
                     </span>
@@ -196,13 +207,12 @@ export default function Hero() {
               </div>
             ) : (
               <div>
-                {/* 3 Tier Typography in Towing Mode: FAST / SAFE / MOVE */}
-                <div className="space-y-1 mb-8 select-none">
+                {/* 3 Tier Condensed Typography in Towing Mode: FAST / SAFE / MOVE */}
+                <div className="space-y-0.5 mb-8 select-none">
                   {/* Line 1: FAST 24/7 */}
                   <div className="flex items-baseline gap-3">
                     <span
-                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
-                      style={{ letterSpacing: '-0.04em' }}
+                      className="text-editorial text-8xl sm:text-9xl xl:text-[140px] text-neutral-950 font-normal leading-none"
                     >
                       FAST
                     </span>
@@ -217,8 +227,7 @@ export default function Hero() {
                   {/* Line 2: SAFE HAUL */}
                   <div className="flex items-baseline gap-3">
                     <span
-                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
-                      style={{ letterSpacing: '-0.04em' }}
+                      className="text-editorial text-8xl sm:text-9xl xl:text-[140px] text-neutral-950 font-normal leading-none"
                     >
                       SAFE
                     </span>
@@ -233,8 +242,7 @@ export default function Hero() {
                   {/* Line 3: MOVE RESCUE */}
                   <div className="flex items-baseline gap-3">
                     <span
-                      className="text-editorial text-7xl sm:text-8xl xl:text-9xl text-neutral-950 font-black"
-                      style={{ letterSpacing: '-0.04em' }}
+                      className="text-editorial text-8xl sm:text-9xl xl:text-[140px] text-neutral-950 font-normal leading-none"
                     >
                       MOVE
                     </span>
@@ -250,25 +258,26 @@ export default function Hero() {
                 <p className="text-neutral-600 text-sm sm:text-base leading-relaxed max-w-md mb-8">
                   State-of-the-art flatbed towing, rapid highway recovery, and
                   damage-free wheel-lift service. Day or night, our GPS fleet arrives
-                  in 30 minutes or less.
+                  in 25 minutes or less.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4">
                   <a
                     href="tel:+18005551234"
-                    className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-neutral-950 px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md group"
+                    className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-neutral-950 px-7 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md group"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     <PhoneCall className="w-4 h-4" />
                     <span>Call 24/7 Dispatch</span>
                   </a>
-                  <a
-                    href="#services"
-                    className="inline-flex items-center gap-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-800 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200"
+                  <button
+                    onClick={() => setIsDispatchModalOpen(true)}
+                    className="inline-flex items-center gap-2 bg-neutral-950 hover:bg-neutral-800 text-white px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
-                    View Tow Services
-                  </a>
+                    <Calculator className="w-4 h-4 text-amber-400" />
+                    <span>Instant ETA & Rate</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -319,19 +328,27 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Bottom Category Selector Strip - Matches the reference screenshot layout! */}
+        {/* Bottom Category Selector Strip - Interactively wired to Explore Parts */}
         <div className="mt-12 lg:mt-16 pt-8 border-t border-neutral-200/80">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 lg:gap-4">
             {categories.map((cat, idx) => {
               const IconComp = cat.icon
+              const isSelected = selectedCategory === cat.id
               return (
-                <div
+                <button
                   key={cat.label}
-                  className="group relative flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl bg-white border border-neutral-200/80 hover:border-neutral-900/40 hover:shadow-md transition-all duration-200 cursor-pointer"
+                  onClick={() => handleCategoryClick(cat.id)}
+                  className={`group relative flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl border transition-all duration-200 text-left ${
+                    isSelected
+                      ? 'bg-neutral-950 text-white border-neutral-950 shadow-md'
+                      : 'bg-white border-neutral-200/80 hover:border-neutral-900/40 hover:shadow-md'
+                  }`}
                 >
                   <div
                     className={`w-11 h-11 rounded-xl flex items-center justify-center mb-2.5 transition-colors duration-200 ${
-                      !isWheels
+                      isSelected
+                        ? 'bg-white/20 text-white'
+                        : !isWheels
                         ? 'bg-amber-50 group-hover:bg-amber-100 text-amber-700'
                         : 'bg-neutral-100 group-hover:bg-neutral-950 group-hover:text-white text-neutral-700'
                     }`}
@@ -339,15 +356,21 @@ export default function Hero() {
                     <IconComp className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
                   </div>
                   <span
-                    className="text-xs font-bold text-neutral-800 uppercase tracking-wider"
+                    className={`text-xs font-bold uppercase tracking-wider ${
+                      isSelected ? 'text-white' : 'text-neutral-800'
+                    }`}
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     {cat.label}
                   </span>
-                  <span className="text-[10px] text-neutral-400 mt-0.5">
-                    {isWheels ? `0${idx + 1} Collection` : `Available 24/7`}
+                  <span
+                    className={`text-[10px] mt-0.5 ${
+                      isSelected ? 'text-white/60' : 'text-neutral-400'
+                    }`}
+                  >
+                    {isWheels ? `Filter Parts →` : `Filter Service →`}
                   </span>
-                </div>
+                </button>
               )
             })}
           </div>

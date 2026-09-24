@@ -3,11 +3,17 @@
 import Image from 'next/image'
 import { useMode } from './mode-context'
 import { useEffect, useState } from 'react'
+import { X, ZoomIn, ArrowRight } from 'lucide-react'
 
 export default function VisualsGallery() {
   const { mode } = useMode()
   const [visible, setVisible] = useState(true)
   const [displayMode, setDisplayMode] = useState(mode)
+  const [activeImage, setActiveImage] = useState<{
+    src: string
+    alt: string
+    caption: string
+  } | null>(null)
 
   useEffect(() => {
     if (mode !== displayMode) {
@@ -26,37 +32,37 @@ export default function VisualsGallery() {
     {
       src: '/site-images/gallery-speedo.jpg',
       alt: 'Precision motorsport speedometer',
-      caption: 'Cockpit Analytics',
+      caption: 'Cockpit Telemetry • 9,000 RPM Redline',
       aspect: 'aspect-[3/4]',
     },
     {
       src: '/site-images/gallery-green-car.jpg',
       alt: 'Aggressive track stance supercar',
-      caption: 'Aero Dynamics',
+      caption: 'Carbon Aero Package • GT Wing',
       aspect: 'aspect-[4/5]',
     },
     {
       src: '/site-images/gallery-wheel-close.jpg',
       alt: 'Bespoke alloy wheel with neon caliper',
-      caption: 'Forged Precision',
+      caption: 'Acid Green Calipers • 410mm Carbon Rotors',
       aspect: 'aspect-[3/4]',
     },
     {
       src: '/site-images/gallery-rim-detail.jpg',
       alt: 'Monoblock wheel finish closeup',
-      caption: 'Anodized Texture',
+      caption: 'Bespoke Centerlock Nut • Satin Titanium',
       aspect: 'aspect-[4/3]',
     },
     {
       src: '/site-images/gallery-dark-wheel.jpg',
       alt: 'Deep dish racing rim',
-      caption: 'Staggered Fitment',
+      caption: 'Staggered Concave Offset • 12J Rear',
       aspect: 'aspect-[3/4]',
     },
     {
       src: '/site-images/gallery-track.jpg',
       alt: 'Circuit racing sports car',
-      caption: 'Track Ready',
+      caption: 'Nürburgring Endurance Testing',
       aspect: 'aspect-[4/3]',
     },
   ]
@@ -65,37 +71,37 @@ export default function VisualsGallery() {
     {
       src: '/site-images/tow-service-1.jpg',
       alt: 'Flatbed zero clearance loading',
-      caption: 'Zero Incline Bed',
+      caption: 'Zero Incline Bed • Safe for Low Clearance',
       aspect: 'aspect-[3/4]',
     },
     {
       src: '/site-images/tow-service-2.jpg',
       alt: 'Heavy wrecker commercial fleet',
-      caption: 'Commercial Power',
+      caption: 'Commercial Power • 50-Ton Boom Recovery',
       aspect: 'aspect-[4/5]',
     },
     {
       src: '/site-images/highway-night.jpg',
       alt: 'Night highway patrol dispatch',
-      caption: '24/7 Coverage',
+      caption: 'Highway 101 Night Patrol • Rapid Response',
       aspect: 'aspect-[3/4]',
     },
     {
       src: '/site-images/tow-service-3.jpg',
       alt: 'Underground parking recovery',
-      caption: 'Low Clearance Rig',
+      caption: 'Sub-6ft Rig • Tight Garage Winch-Out',
       aspect: 'aspect-[4/3]',
     },
     {
       src: '/site-images/tow-service-4.jpg',
       alt: 'Off-road recovery winch equipment',
-      caption: 'Hydraulic Winching',
+      caption: 'Soft-Shackle Rigging • Damage Free',
       aspect: 'aspect-[3/4]',
     },
     {
       src: '/site-images/article-battery.jpg',
       alt: 'Roadside diagnostic and battery test',
-      caption: 'Mobile Tech',
+      caption: 'High-Amperage Fleet Mobile Booster',
       aspect: 'aspect-[4/3]',
     },
   ]
@@ -103,9 +109,9 @@ export default function VisualsGallery() {
   const visuals = isWheels ? wheelVisuals : towVisuals
 
   return (
-    <section id="gallery" className="w-full py-20 lg:py-28 bg-white">
+    <section id="gallery" className="w-full py-20 lg:py-28 bg-white border-b border-neutral-200/60">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        {/* Section Heading */}
+        {/* Section Heading with Bebas Neue font */}
         <div
           className="text-center mb-16 transition-all duration-400"
           style={{
@@ -113,20 +119,20 @@ export default function VisualsGallery() {
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
           }}
         >
-          <div className="inline-flex items-center gap-3 mb-4">
+          <div className="inline-flex items-center gap-3 mb-3">
             <span className="w-8 h-[1px] bg-neutral-300" />
             <span
               className="text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-bold"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              {isWheels ? 'Editorial Portfolio' : 'Live Incident Archive'}
+              — 04 // {isWheels ? 'MOTORSPORT PORTFOLIO' : 'INCIDENT LOG ARCHIVE'} —
             </span>
             <span className="w-8 h-[1px] bg-neutral-300" />
           </div>
 
           <h2
-            className="text-4xl sm:text-5xl lg:text-6xl font-black text-neutral-950 uppercase tracking-tight"
-            style={{ fontFamily: 'var(--font-heading)', lineHeight: '1.05' }}
+            className="text-editorial text-6xl sm:text-7xl lg:text-8xl text-neutral-950 uppercase tracking-wide"
+            style={{ lineHeight: '0.92' }}
           >
             VISUALS
           </h2>
@@ -143,7 +149,8 @@ export default function VisualsGallery() {
           {visuals.map((item, index) => (
             <div
               key={index}
-              className={`group relative overflow-hidden rounded-3xl bg-neutral-100 ${item.aspect} shadow-sm hover:shadow-lg transition-all duration-300`}
+              onClick={() => setActiveImage(item)}
+              className={`group relative overflow-hidden rounded-3xl bg-neutral-100 ${item.aspect} shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer`}
             >
               <Image
                 src={item.src}
@@ -154,6 +161,12 @@ export default function VisualsGallery() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
+              {/* Hover Zoom Icon */}
+              <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-neutral-950 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md">
+                <ZoomIn className="w-4 h-4" />
+              </div>
+
+              {/* Hover Caption */}
               <div className="absolute bottom-4 left-4 right-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                 <span
                   className="text-white text-xs font-bold uppercase tracking-wider block drop-shadow"
@@ -166,6 +179,55 @@ export default function VisualsGallery() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {activeImage && (
+        <div
+          onClick={() => setActiveImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6"
+          >
+            <button
+              onClick={() => setActiveImage(null)}
+              className="absolute top-6 right-6 w-9 h-9 rounded-full bg-neutral-950 text-white flex items-center justify-center z-20 hover:bg-neutral-800 transition-colors shadow-md"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-950 mb-4">
+              <Image
+                src={activeImage.src}
+                alt={activeImage.alt}
+                fill
+                className="object-contain"
+              />
+            </div>
+
+            <div className="flex items-center justify-between px-2">
+              <div>
+                <h4
+                  className="text-lg font-black text-neutral-950 uppercase"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {activeImage.alt}
+                </h4>
+                <p className="text-xs text-neutral-500">{activeImage.caption}</p>
+              </div>
+
+              <button
+                onClick={() => setActiveImage(null)}
+                className="px-5 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold uppercase tracking-wider transition-colors"
+              >
+                Close Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

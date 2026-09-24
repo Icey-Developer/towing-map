@@ -2,11 +2,17 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { Menu, X, ShoppingBag, Phone, Search, User } from 'lucide-react'
+import { Menu, X, ShoppingBag, Phone, Search, User, ShieldAlert } from 'lucide-react'
 import { useMode } from './mode-context'
 
 export default function Header() {
-  const { mode, setMode } = useMode()
+  const {
+    mode,
+    setMode,
+    cartCount,
+    setIsCartOpen,
+    setIsDispatchModalOpen,
+  } = useMode()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -16,28 +22,29 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navItems = mode === 'wheels'
-    ? [
-        { name: 'Wheels', href: '#wheels' },
-        { name: 'Brands', href: '#brands' },
-        { name: 'Spares', href: '#spares' },
-        { name: 'Gallery', href: '#gallery' },
-        { name: 'Contact', href: '#contact' },
-      ]
-    : [
-        { name: 'Towing', href: '#services' },
-        { name: 'Fleet', href: '#fleet' },
-        { name: 'Roadside', href: '#roadside' },
-        { name: 'Coverage', href: '#coverage' },
-        { name: 'Contact', href: '#contact' },
-      ]
+  const navItems =
+    mode === 'wheels'
+      ? [
+          { name: 'Wheels', href: '#wheels' },
+          { name: 'Brands', href: '#brands' },
+          { name: 'Spares', href: '#spares' },
+          { name: 'Gallery', href: '#gallery' },
+          { name: 'Contact', href: '#contact' },
+        ]
+      : [
+          { name: 'Towing', href: '#services' },
+          { name: 'Fleet', href: '#brands' },
+          { name: 'Roadside', href: '#spares' },
+          { name: 'Coverage', href: '#gallery' },
+          { name: 'Contact', href: '#contact' },
+        ]
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-neutral-200/80 py-3.5'
-          : 'bg-white/80 backdrop-blur-sm py-5'
+          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-neutral-200/80 py-3'
+          : 'bg-white/80 backdrop-blur-xs py-4 lg:py-5'
       }`}
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
@@ -46,12 +53,12 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative flex items-center justify-center w-9 h-9">
               <div
-                className={`w-[4px] h-7 rounded-sm transform -skew-x-12 transition-colors duration-400 ${
-                  mode === 'towing' ? 'bg-amber-500' : 'bg-neutral-900'
+                className={`w-[4px] h-7 rounded-sm transform -skew-x-12 transition-colors duration-300 ${
+                  mode === 'towing' ? 'bg-amber-500' : 'bg-neutral-950'
                 }`}
               />
               <div
-                className={`w-[3px] h-5 rounded-sm transform -skew-x-12 ml-1 opacity-60 transition-colors duration-400 ${
+                className={`w-[3px] h-5 rounded-sm transform -skew-x-12 ml-1 opacity-60 transition-colors duration-300 ${
                   mode === 'towing' ? 'bg-amber-400' : 'bg-neutral-600'
                 }`}
               />
@@ -63,25 +70,49 @@ export default function Header() {
               >
                 ELITE
               </span>
-              <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-500 font-semibold mt-0.5">
+              <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-400 font-bold mt-0.5">
                 {mode === 'wheels' ? 'Wheels & Performance' : 'Towing & Recovery'}
               </span>
             </div>
           </Link>
 
+          {/* Sticky Mode Toggle in Header (Always Accessible) */}
+          <div className="hidden sm:inline-flex items-center bg-neutral-100 p-1 rounded-full border border-neutral-200/80 text-[11px] font-bold">
+            <button
+              onClick={() => setMode('wheels')}
+              className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${
+                mode === 'wheels'
+                  ? 'bg-neutral-950 text-white shadow-xs'
+                  : 'text-neutral-500 hover:text-neutral-900'
+              }`}
+            >
+              Wheels
+            </button>
+            <button
+              onClick={() => setMode('towing')}
+              className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${
+                mode === 'towing'
+                  ? 'bg-amber-500 text-neutral-950 shadow-xs'
+                  : 'text-neutral-500 hover:text-neutral-900'
+              }`}
+            >
+              Towing 24/7
+            </button>
+          </div>
+
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-9">
+          <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-neutral-600 text-xs font-semibold uppercase tracking-[0.18em] hover:text-neutral-950 transition-colors duration-200 relative group py-1"
+                className="text-neutral-600 text-xs font-semibold uppercase tracking-[0.16em] hover:text-neutral-950 transition-colors duration-200 relative group py-1"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {item.name}
                 <span
                   className={`absolute bottom-0 left-0 w-0 h-[2px] rounded-full group-hover:w-full transition-all duration-300 ${
-                    mode === 'towing' ? 'bg-amber-500' : 'bg-neutral-900'
+                    mode === 'towing' ? 'bg-amber-500' : 'bg-neutral-950'
                   }`}
                 />
               </Link>
@@ -89,36 +120,37 @@ export default function Header() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4">
-            <button
-              className="w-9 h-9 rounded-full flex items-center justify-center text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
-              aria-label="Search"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-            <button
-              className="w-9 h-9 rounded-full flex items-center justify-center text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
-              aria-label="Account"
-            >
-              <User className="w-4 h-4" />
-            </button>
-
+          <div className="flex items-center gap-3 sm:gap-4">
             {mode === 'towing' ? (
-              <a
-                href="tel:+18005551234"
-                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-colors shadow-sm"
-                style={{ fontFamily: 'var(--font-heading)' }}
-              >
-                <Phone className="w-3.5 h-3.5 fill-current" />
-                <span>24/7 Dispatch</span>
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsDispatchModalOpen(true)}
+                  className="hidden md:inline-flex items-center gap-1.5 bg-neutral-950 hover:bg-neutral-800 text-white px-3.5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Get ETA & Quote</span>
+                </button>
+                <a
+                  href="tel:+18005551234"
+                  className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-colors shadow-xs"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  <Phone className="w-3.5 h-3.5 fill-current" />
+                  <span>24/7 Dispatch</span>
+                </a>
+              </div>
             ) : (
               <button
-                className="relative w-9 h-9 rounded-full flex items-center justify-center text-neutral-800 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
-                aria-label="Cart"
+                onClick={() => setIsCartOpen(true)}
+                className="relative w-10 h-10 rounded-full flex items-center justify-center text-neutral-800 hover:text-neutral-950 hover:bg-neutral-100 transition-colors"
+                aria-label="Shopping Cart"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-neutral-950" />
+                {cartCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-neutral-950 text-white text-[9px] font-bold flex items-center justify-center animate-in zoom-in">
+                    {cartCount}
+                  </span>
+                )}
               </button>
             )}
 
@@ -137,10 +169,36 @@ export default function Header() {
       {/* Mobile Menu Dropdown */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-300 ${
-          menuOpen ? 'max-h-80 border-b border-neutral-200 bg-white/95' : 'max-h-0'
+          menuOpen ? 'max-h-96 border-b border-neutral-200 bg-white' : 'max-h-0'
         }`}
       >
         <div className="px-6 py-4 flex flex-col gap-3">
+          {/* Mobile mode switcher */}
+          <div className="flex bg-neutral-100 p-1 rounded-full text-xs font-bold mb-2">
+            <button
+              onClick={() => {
+                setMode('wheels')
+                setMenuOpen(false)
+              }}
+              className={`flex-1 py-2 rounded-full text-center ${
+                mode === 'wheels' ? 'bg-neutral-950 text-white' : 'text-neutral-600'
+              }`}
+            >
+              Wheels & Spares
+            </button>
+            <button
+              onClick={() => {
+                setMode('towing')
+                setMenuOpen(false)
+              }}
+              className={`flex-1 py-2 rounded-full text-center ${
+                mode === 'towing' ? 'bg-amber-500 text-neutral-950' : 'text-neutral-600'
+              }`}
+            >
+              Tow Truck 24/7
+            </button>
+          </div>
+
           {navItems.map((item) => (
             <Link
               key={item.name}

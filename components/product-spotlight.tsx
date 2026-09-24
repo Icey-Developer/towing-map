@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { ArrowRight, PhoneCall, ShieldCheck, Zap } from 'lucide-react'
 
 export default function ProductSpotlight() {
-  const { mode } = useMode()
+  const { mode, addToCart, setIsDispatchModalOpen } = useMode()
   const [visible, setVisible] = useState(true)
   const [displayMode, setDisplayMode] = useState(mode)
 
@@ -23,8 +23,25 @@ export default function ProductSpotlight() {
 
   const isWheels = displayMode === 'wheels'
 
+  const handleSpotlightAction = () => {
+    if (isWheels) {
+      addToCart({
+        id: 'spotlight-f1',
+        name: 'Formula One Tyres (Set of 4)',
+        spec: 'Ultra High Performance Semi-Slick 265/35R19',
+        price: '$125.28',
+        rating: 5,
+        reviews: 120,
+        image: '/site-images/spotlight-tyres.jpg',
+        badge: 'Special Offer',
+      })
+    } else {
+      setIsDispatchModalOpen(true)
+    }
+  }
+
   return (
-    <section className="w-full py-16 lg:py-24 bg-white">
+    <section className="w-full py-16 lg:py-24 bg-white border-b border-neutral-200/60">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div
           className="relative overflow-hidden rounded-3xl bg-[#f4f5f7] border border-neutral-200/80 p-8 sm:p-12 lg:p-16 transition-all duration-400"
@@ -33,17 +50,17 @@ export default function ProductSpotlight() {
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
           }}
         >
-          {/* Subtle background ambient light */}
+          {/* Subtle ambient light */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-white/80 via-transparent to-transparent rounded-full pointer-events-none" />
 
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-neutral-200 text-[10px] font-bold uppercase tracking-wider text-neutral-600 mb-6 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-neutral-200 text-[10px] font-bold uppercase tracking-wider text-neutral-600 mb-4 shadow-xs">
                 {isWheels ? (
                   <>
                     <Zap className="w-3 h-3 text-amber-500 fill-amber-500" />
-                    <span>Special Feature Offer</span>
+                    <span>Special Feature Drop</span>
                   </>
                 ) : (
                   <>
@@ -54,8 +71,8 @@ export default function ProductSpotlight() {
               </div>
 
               <h2
-                className="text-4xl sm:text-5xl lg:text-6xl font-black text-neutral-950 uppercase tracking-tight mb-4"
-                style={{ fontFamily: 'var(--font-heading)', lineHeight: '1.02' }}
+                className="text-editorial text-6xl sm:text-7xl lg:text-8xl text-neutral-950 uppercase tracking-wide mb-3"
+                style={{ lineHeight: '0.92' }}
               >
                 {isWheels ? 'FORMULA ONE TYRES' : '24/7 HIGHWAY RESCUE'}
               </h2>
@@ -73,18 +90,18 @@ export default function ProductSpotlight() {
               <p className="text-neutral-600 text-sm sm:text-base leading-relaxed max-w-lg mb-8">
                 {isWheels
                   ? 'Engineered with synthetic silica racing compounds for instantaneous wet and dry grip. Rated for high heat thresholds and aggressive track-day performance.'
-                  : 'Stuck on the road or locked out? Our emergency dispatch unit arrives in 30 minutes with flatbed and wheel-lift options. Fully licensed, insured, and damage-free.'}
+                  : 'Stuck on the road or locked out? Our emergency dispatch unit arrives in 20 minutes with flatbed and wheel-lift options. Fully licensed, insured, and damage-free.'}
               </p>
 
               {/* Specs Pills */}
               <div className="flex flex-wrap gap-2.5 mb-8">
                 {(isWheels
                   ? ['Ultra Grip Rubber', 'Speed Rated Y (186mph)', 'Low Noise Tread', 'Rim Protector']
-                  : ['30-Min Arrival', 'Soft-Strap Loading', 'Zero Vehicle Damage', 'Direct Insurance Billing']
+                  : ['20-Min Arrival', 'Soft-Strap Loading', 'Zero Vehicle Damage', 'Direct Insurance Billing']
                 ).map((spec) => (
                   <span
                     key={spec}
-                    className="bg-white border border-neutral-200/80 px-3.5 py-1.5 rounded-full text-xs font-semibold text-neutral-700 shadow-xs"
+                    className="bg-white border border-neutral-200/80 px-3.5 py-1.5 rounded-full text-xs font-semibold text-neutral-700 shadow-2xs"
                   >
                     {spec}
                   </span>
@@ -94,23 +111,23 @@ export default function ProductSpotlight() {
               {/* Call to action button */}
               <div className="flex flex-wrap items-center gap-4">
                 {isWheels ? (
-                  <a
-                    href="#wheels"
+                  <button
+                    onClick={handleSpotlightAction}
                     className="inline-flex items-center gap-2 bg-neutral-950 hover:bg-neutral-800 text-white font-bold px-8 py-4 rounded-full text-xs uppercase tracking-widest transition-all duration-200 shadow-md group"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     <span>SHOP NOW</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
+                  </button>
                 ) : (
-                  <a
-                    href="tel:+18005551234"
+                  <button
+                    onClick={handleSpotlightAction}
                     className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold px-8 py-4 rounded-full text-xs uppercase tracking-widest transition-all duration-200 shadow-md group"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     <PhoneCall className="w-4 h-4" />
-                    <span>CALL DISPATCH NOW</span>
-                  </a>
+                    <span>CALCULATE ETA & DISPATCH</span>
+                  </button>
                 )}
               </div>
             </div>
